@@ -1,0 +1,106 @@
+{
+    "datasource": {
+      "type": "influxdb",
+      "uid": "s_qVQfZRk"
+    },
+    "description": "Die Sensoren messen, wie hell es ist in Lux – von stockdunkel bis superhell. Wir verwenden eine besondere Anzeige, die sowohl kleine als auch große Helligkeitsänderungen gut zeigt.\n|Wert|Einordnung|\n|---|---|\n|90000 Lux|Heller Sonnentag|\n|3500 Lux|Bedeckter Wintertag|\n|500 Lux|Bürobeleuchtung|\n|50–100 Lux|Wohnraumbeleuchtung|\n|1 Lux|Kerze ca. 1 m entfernt|\n|< 0,01 Lux|Dunkelheit|",
+    "gridPos": {
+      "h": 9,
+      "w": 24,
+      "x": 0,
+      "y": 18
+    },
+    "id": 170,
+    "interval": ">1s",
+    "links": [],
+    "options": {
+      "renderer": "canvas",
+      "map": "none",
+      "themeEditor": {
+        "name": "default",
+        "config": "{}"
+      },
+      "baidu": {
+        "key": "",
+        "callback": "bmapReady"
+      },
+      "gaode": {
+        "key": "",
+        "plugin": "AMap.Scale,AMap.ToolBar"
+      },
+      "google": {
+        "key": "",
+        "callback": "gmapReady"
+      },
+      "editorMode": "code",
+      "editor": {
+        "format": "auto"
+      },
+      "visualEditor": {
+        "dataset": [],
+        "series": [],
+        "code": "return {\n  dataset: context.editor.dataset,\n  series: context.editor.series,\n  xAxis: {\n    type: 'time',\n  },\n  yAxis: {\n    type: 'value',\n    min: 'dataMin',\n  },\n}\n"
+      },
+      "getOption": "const series = context.panel.data.series.map((s) => {\n  const sData = s.fields.find((f) => f.type === 'number').values.buffer || s.fields.find((f) => f.type === 'number').values;\n  const sTime = s.fields.find((f) => f.type === 'time').values.buffer || s.fields.find((f) => f.type === 'time').values;\n\n  return {\n    name: s.refId,\n    type: 'heatmap',\n    showSymbol: false,\n    data: sData.map((d, i) => [\n      new Date(sTime[i]), 1, d?.toFixed()\n    ]),\n  };\n});\n\n\n\nreturn {\n  backgroundColor: 'transparent',\n  tooltip: {\n    trigger: 'axis',\n  },\n  xAxis: {\n    type: 'category',\n    show: false\n  },\n  yAxis: {\n    type: 'value',\n    min: 'dataMin',\n    max: 1,\n    show: false\n  },\n  grid: {\n    left: '2%',\n    right: '2%',\n    top: '2%',\n    bottom: 24,\n    containLabel: true,\n  },\n  visualMap: {\n    min: 0,\n    max: 500,\n    dimension: 2,\n    calculable: true,\n    orient: 'horizontal',\n    show: false,\n    inRange: {\n      color: ['#04031a', '#0c0952', '#151091', '#1e17cf', '#3f39d4', '#605bd9', '#7f92eb', '#9eadf0', '#f0eba3', '#f0ecb9', '#fffef2']\n    },\n    left: 'center',\n    bottom: '15%'\n  },\n  series,\n};"
+    },
+    "pluginVersion": "6.6.0",
+    "targets": [
+      {
+        "alias": "Sensor $tag_deviceNo",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "s_qVQfZRk"
+        },
+        "dsType": "sensordatadb",
+        "groupBy": [
+          {
+            "params": [
+              "$__interval"
+            ],
+            "type": "time"
+          },
+          {
+            "params": [
+              "deviceNo"
+            ],
+            "type": "tag"
+          },
+          {
+            "params": [
+              "null"
+            ],
+            "type": "fill"
+          }
+        ],
+        "measurement": "luxmeter",
+        "orderByTime": "ASC",
+        "policy": "default",
+        "refId": "A",
+        "resultFormat": "time_series",
+        "select": [
+          [
+            {
+              "params": [
+                "illuminance"
+              ],
+              "type": "field"
+            },
+            {
+              "params": [],
+              "type": "mean"
+            }
+          ]
+        ],
+        "tags": [
+          {
+            "key": "deviceNo::tag",
+            "operator": "=",
+            "value": "2"
+          }
+        ]
+      }
+    ],
+    "title": "Licht",
+    "transparent": true,
+    "type": "volkovlabs-echarts-panel"
+  }

@@ -1,0 +1,209 @@
+{
+    "datasource": {
+      "type": "influxdb",
+      "uid": "s_qVQfZRk"
+    },
+    "description": "Der Sensor misst die Konzentration verschiedener Stoffe in der Luft und fasst diese in einem Luftqualitätsindex zusammen. Ein hoher Wert bedeutet schlechte Luftqualität, ein niedriger Wert gute Luftqualität.\n|Wert|Einordnung|\n|---|---|\n|über 251|ernsthaft beeinträchtigte Luftqualität|\n|201 - 250|stark beeinträchtigte Luftqualität|\n|101 - 200|leicht bis moderat beeinträchtigte Luftqualität|\n|unter 100|gute Luftqualität|",
+    "fieldConfig": {
+      "defaults": {
+        "custom": {
+          "lineWidth": 0,
+          "fillOpacity": 70,
+          "spanNulls": false,
+          "insertNulls": false,
+          "hideFrom": {
+            "tooltip": false,
+            "viz": false,
+            "legend": false
+          }
+        },
+        "color": {
+          "mode": "thresholds",
+          "fixedColor": "green"
+        },
+        "mappings": [
+          {
+            "options": {
+              "from": null,
+              "result": {
+                "index": 0,
+                "text": "sehr gut"
+              },
+              "to": 50
+            },
+            "type": "range"
+          },
+          {
+            "options": {
+              "from": 51,
+              "result": {
+                "index": 1,
+                "text": "gut"
+              },
+              "to": 100
+            },
+            "type": "range"
+          },
+          {
+            "options": {
+              "from": 101,
+              "result": {
+                "index": 2,
+                "text": "akzeptabel"
+              },
+              "to": 150
+            },
+            "type": "range"
+          },
+          {
+            "options": {
+              "from": 151,
+              "result": {
+                "index": 3,
+                "text": "leich eingeschränkt"
+              },
+              "to": 200
+            },
+            "type": "range"
+          },
+          {
+            "options": {
+              "from": 201,
+              "result": {
+                "index": 4,
+                "text": "eingeschränkt"
+              },
+              "to": 250
+            },
+            "type": "range"
+          },
+          {
+            "options": {
+              "from": 251,
+              "result": {
+                "index": 5,
+                "text": "stark eingeschränkt"
+              },
+              "to": null
+            },
+            "type": "range"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "light-green",
+              "value": null
+            },
+            {
+              "color": "super-light-green",
+              "value": 51
+            },
+            {
+              "color": "super-light-yellow",
+              "value": 101
+            },
+            {
+              "color": "light-yellow",
+              "value": 151
+            },
+            {
+              "color": "super-light-orange",
+              "value": 201
+            },
+            {
+              "color": "super-light-red",
+              "value": 251
+            },
+            {
+              "color": "light-red",
+              "value": 351
+            }
+          ]
+        },
+        "decimals": 0,
+        "max": 350,
+        "min": 0,
+        "noValue": "keine Daten im gewählten Zeitraum vorhanden"
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 4,
+      "w": 24,
+      "x": 0,
+      "y": 41.01
+    },
+    "id": 157,
+    "options": {
+      "mergeValues": true,
+      "showValue": "never",
+      "alignValue": "left",
+      "rowHeight": 0.48,
+      "legend": {
+        "showLegend": true,
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "tooltip": {
+        "mode": "single",
+        "sort": "none"
+      }
+    },
+    "pluginVersion": "10.1.7",
+    "targets": [
+      {
+        "alias": "Sensor $tag_deviceNo",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "s_qVQfZRk"
+        },
+        "groupBy": [
+          {
+            "params": [
+              "$__interval"
+            ],
+            "type": "time"
+          },
+          {
+            "params": [
+              "deviceNo::tag"
+            ],
+            "type": "tag"
+          },
+          {
+            "params": [
+              "null"
+            ],
+            "type": "fill"
+          }
+        ],
+        "measurement": "airquality",
+        "orderByTime": "ASC",
+        "policy": "default",
+        "refId": "A",
+        "resultFormat": "time_series",
+        "select": [
+          [
+            {
+              "params": [
+                "iaq"
+              ],
+              "type": "field"
+            },
+            {
+              "params": [],
+              "type": "mean"
+            }
+          ]
+        ],
+        "tags": []
+      }
+    ],
+    "title": "Luftqualität Index",
+    "transparent": true,
+    "type": "state-timeline"
+  }
+
+

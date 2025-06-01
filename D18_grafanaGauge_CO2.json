@@ -1,0 +1,193 @@
+{
+    "datasource": {
+      "type": "influxdb",
+      "uid": "s_qVQfZRk"
+    },
+    "description": "",
+    "fieldConfig": {
+      "defaults": {
+        "mappings": [
+          {
+            "options": {
+              "from": 100,
+              "result": {
+                "index": 0,
+                "text": " 🙂"
+              },
+              "to": 400
+            },
+            "type": "range"
+          },
+          {
+            "options": {
+              "from": 400,
+              "result": {
+                "index": 1,
+                "text": "Gute Innenluft"
+              },
+              "to": 800
+            },
+            "type": "range"
+          },
+          {
+            "options": {
+              "from": 800,
+              "result": {
+                "index": 2,
+                "text": "Akzeptable Innenluft"
+              },
+              "to": 1000
+            },
+            "type": "range"
+          },
+          {
+            "options": {
+              "from": 1000,
+              "result": {
+                "index": 3,
+                "text": "Stickig, abgestanden"
+              },
+              "to": 1500
+            },
+            "type": "range"
+          },
+          {
+            "options": {
+              "from": 1500,
+              "result": {
+                "index": 4,
+                "text": "Eingeschr. Luftqualität"
+              },
+              "to": 2000
+            },
+            "type": "range"
+          },
+          {
+            "options": {
+              "from": 2000,
+              "result": {
+                "index": 5,
+                "text": "Schlechte Luftqualität"
+              },
+              "to": 5000
+            },
+            "type": "range"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "super-light-blue",
+              "value": null
+            },
+            {
+              "color": "light-blue",
+              "value": 400
+            },
+            {
+              "color": "semi-dark-blue",
+              "value": 800
+            },
+            {
+              "color": "super-light-purple",
+              "value": 1000
+            },
+            {
+              "color": "semi-dark-purple",
+              "value": 1500
+            },
+            {
+              "color": "dark-red",
+              "value": 2000
+            }
+          ]
+        },
+        "color": {
+          "mode": "thresholds"
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 4,
+      "w": 6,
+      "x": 0,
+      "y": 44.010000000000005
+    },
+    "id": 147,
+    "interval": ">1s",
+    "links": [],
+    "options": {
+      "reduceOptions": {
+        "values": false,
+        "calcs": [
+          "lastNotNull"
+        ],
+        "fields": ""
+      },
+      "orientation": "auto",
+      "showThresholdLabels": false,
+      "showThresholdMarkers": true
+    },
+    "pluginVersion": "10.1.7",
+    "targets": [
+      {
+        "alias": "Sensor $tag_deviceNo",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "s_qVQfZRk"
+        },
+        "dsType": "sensordatadb",
+        "groupBy": [
+          {
+            "params": [
+              "$__interval"
+            ],
+            "type": "time"
+          },
+          {
+            "params": [
+              "deviceNo"
+            ],
+            "type": "tag"
+          },
+          {
+            "params": [
+              "null"
+            ],
+            "type": "fill"
+          }
+        ],
+        "measurement": "co2",
+        "orderByTime": "ASC",
+        "policy": "default",
+        "refId": "A",
+        "resultFormat": "time_series",
+        "select": [
+          [
+            {
+              "params": [
+                "co2"
+              ],
+              "type": "field"
+            },
+            {
+              "params": [],
+              "type": "mean"
+            }
+          ]
+        ],
+        "tags": [
+          {
+            "key": "deviceNo::tag",
+            "operator": "=",
+            "value": "4"
+          }
+        ]
+      }
+    ],
+    "title": "Luftqualität _CO2",
+    "transparent": true,
+    "type": "gauge"
+  }

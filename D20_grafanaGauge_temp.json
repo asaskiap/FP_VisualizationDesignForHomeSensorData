@@ -1,0 +1,128 @@
+{
+    "datasource": {
+      "type": "influxdb",
+      "uid": "s_qVQfZRk"
+    },
+    "description": "Die Sensoren messen, wie feucht die Luft ist, zwischen 0 % und 100 %. Zu viel Feuchtigkeit ist nicht gut für die Sensoren (und auch nicht für die Wohnung). Die Luftfeuchte kann zunehmen durch Duschen, Baden oder Kochen und sinkt beim Lüften.\n|Wert|Einordnung|\n|---|---|\n|über 65 %| Luftfeuchte zu hoch|\n|40 % – 65 %|optimaler Bereich für Wohnräume|\n|unter 40 %|Luftfeuchte zu niedrig|",
+    "fieldConfig": {
+      "defaults": {
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "light-blue",
+              "value": null
+            },
+            {
+              "color": "super-light-blue",
+              "value": 15
+            },
+            {
+              "color": "super-light-green",
+              "value": 19
+            },
+            {
+              "color": "light-yellow",
+              "value": 22
+            },
+            {
+              "color": "super-light-orange",
+              "value": 25
+            },
+            {
+              "color": "super-light-red",
+              "value": 30
+            }
+          ]
+        },
+        "color": {
+          "mode": "thresholds"
+        },
+        "max": 35,
+        "min": 10
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 7,
+      "w": 8,
+      "x": 16,
+      "y": 6
+    },
+    "id": 144,
+    "interval": ">1s",
+    "links": [],
+    "options": {
+      "reduceOptions": {
+        "values": false,
+        "calcs": [
+          "lastNotNull"
+        ],
+        "fields": ""
+      },
+      "orientation": "auto",
+      "showThresholdLabels": false,
+      "showThresholdMarkers": true
+    },
+    "pluginVersion": "10.1.7",
+    "targets": [
+      {
+        "alias": "Sensor $tag_deviceNo",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "s_qVQfZRk"
+        },
+        "dsType": "sensordatadb",
+        "groupBy": [
+          {
+            "params": [
+              "1h"
+            ],
+            "type": "time"
+          },
+          {
+            "params": [
+              "deviceNo"
+            ],
+            "type": "tag"
+          },
+          {
+            "params": [
+              "null"
+            ],
+            "type": "fill"
+          }
+        ],
+        "measurement": "thermometer",
+        "orderByTime": "ASC",
+        "policy": "default",
+        "refId": "A",
+        "resultFormat": "time_series",
+        "select": [
+          [
+            {
+              "params": [
+                "ambientTemperature"
+              ],
+              "type": "field"
+            },
+            {
+              "params": [],
+              "type": "mean"
+            }
+          ]
+        ],
+        "tags": [
+          {
+            "key": "deviceNo::tag",
+            "operator": "=~",
+            "value": "/^$deviceNo$/"
+          }
+        ]
+      }
+    ],
+    "title": "Temperatur momentan",
+    "transparent": true,
+    "type": "gauge"
+  }

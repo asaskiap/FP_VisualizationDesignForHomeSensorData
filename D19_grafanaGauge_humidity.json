@@ -1,0 +1,139 @@
+{
+    "datasource": {
+      "type": "influxdb",
+      "uid": "s_qVQfZRk"
+    },
+    "description": "Die Sensoren messen, wie feucht die Luft ist, zwischen 0 % und 100 %. Zu viel Feuchtigkeit ist nicht gut für die Sensoren (und auch nicht für die Wohnung). Die Luftfeuchte kann zunehmen durch Duschen, Baden oder Kochen und sinkt beim Lüften.\n|Wert|Einordnung|\n|---|---|\n|über 65 %| Luftfeuchte zu hoch|\n|40 % – 65 %|optimaler Bereich für Wohnräume|\n|unter 40 %|Luftfeuchte zu niedrig|",
+    "fieldConfig": {
+      "defaults": {
+        "mappings": [
+          {
+            "options": {
+              "from": 40,
+              "result": {
+                "index": 0,
+                "text": "Optimal"
+              },
+              "to": 65
+            },
+            "type": "range"
+          },
+          {
+            "options": {
+              "from": 65,
+              "result": {
+                "index": 1,
+                "text": "Zu feucht"
+              },
+              "to": 100
+            },
+            "type": "range"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "yellow",
+              "value": null
+            },
+            {
+              "color": "light-green",
+              "value": 40
+            },
+            {
+              "color": "dark-blue",
+              "value": 65
+            }
+          ]
+        },
+        "color": {
+          "mode": "thresholds"
+        },
+        "max": 80,
+        "min": 25
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 7,
+      "x": 16,
+      "y": 0
+    },
+    "id": 142,
+    "interval": ">1s",
+    "links": [],
+    "options": {
+      "reduceOptions": {
+        "values": false,
+        "calcs": [
+          "lastNotNull"
+        ],
+        "fields": ""
+      },
+      "orientation": "auto",
+      "showThresholdLabels": false,
+      "showThresholdMarkers": true
+    },
+    "pluginVersion": "10.1.7",
+    "targets": [
+      {
+        "alias": "Sensor $tag_deviceNo",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "s_qVQfZRk"
+        },
+        "dsType": "sensordatadb",
+        "groupBy": [
+          {
+            "params": [
+              "1h"
+            ],
+            "type": "time"
+          },
+          {
+            "params": [
+              "deviceNo"
+            ],
+            "type": "tag"
+          },
+          {
+            "params": [
+              "null"
+            ],
+            "type": "fill"
+          }
+        ],
+        "measurement": "hygrometer",
+        "orderByTime": "ASC",
+        "policy": "default",
+        "refId": "A",
+        "resultFormat": "time_series",
+        "select": [
+          [
+            {
+              "params": [
+                "humidity"
+              ],
+              "type": "field"
+            },
+            {
+              "params": [],
+              "type": "mean"
+            }
+          ]
+        ],
+        "tags": [
+          {
+            "key": "deviceNo::tag",
+            "operator": "=",
+            "value": "1"
+          }
+        ]
+      }
+    ],
+    "title": "Luftfeuchtigkeit Sensor 1 Momentan",
+    "transparent": true,
+    "type": "gauge"
+  }

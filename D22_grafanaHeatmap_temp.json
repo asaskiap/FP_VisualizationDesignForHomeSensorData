@@ -1,0 +1,238 @@
+{
+    "datasource": {
+      "type": "influxdb",
+      "uid": "s_qVQfZRk"
+    },
+    "description": "Die Sensoren messen, wie kalt die Umgebung ist in °C, von eiskalt (-40 °C) bis sehr heiß (120 °C). Aber Vorsicht: Zu kalt (< 0 °C) oder zu heiß (> 50 °C,  z.B. heiße Heizungen oder Lampen) kann den Sensoren schaden!\n|Wert|Einordnung|\n|---|---|\n|36 °C|Sommertag|\n|18 – 22 °C|typischer Wohnraum|\n|5 °C|Kühlschrank|\n|-18 °C|Tiefkühltruhe|",
+    "fieldConfig": {
+      "defaults": {
+        "custom": {
+          "scaleDistribution": {
+            "type": "linear"
+          },
+          "hideFrom": {
+            "tooltip": false,
+            "viz": false,
+            "legend": false
+          }
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 9,
+      "w": 24,
+      "x": 0,
+      "y": 27.01
+    },
+    "id": 146,
+    "interval": ">1s",
+    "links": [],
+    "options": {
+      "calculate": false,
+      "yAxis": {
+        "axisPlacement": "left",
+        "reverse": false
+      },
+      "rowsFrame": {
+        "layout": "auto"
+      },
+      "color": {
+        "mode": "scheme",
+        "fill": "dark-orange",
+        "scale": "exponential",
+        "exponent": 0.5,
+        "scheme": "RdYlBu",
+        "steps": 57,
+        "reverse": false,
+        "max": 28,
+        "min": 12
+      },
+      "cellGap": 0,
+      "filterValues": {
+        "le": 1e-9
+      },
+      "tooltip": {
+        "show": true,
+        "yHistogram": false
+      },
+      "legend": {
+        "show": true
+      },
+      "exemplars": {
+        "color": "rgba(255,0,255,0.7)"
+      }
+    },
+    "pluginVersion": "10.1.7",
+    "targets": [
+      {
+        "alias": "Sensor $tag_deviceNo",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "s_qVQfZRk"
+        },
+        "dsType": "sensordatadb",
+        "groupBy": [
+          {
+            "params": [
+              "$__interval"
+            ],
+            "type": "time"
+          },
+          {
+            "params": [
+              "deviceNo"
+            ],
+            "type": "tag"
+          },
+          {
+            "params": [
+              "null"
+            ],
+            "type": "fill"
+          }
+        ],
+        "hide": false,
+        "measurement": "thermometer",
+        "orderByTime": "ASC",
+        "policy": "default",
+        "refId": "A",
+        "resultFormat": "time_series",
+        "select": [
+          [
+            {
+              "params": [
+                "ambientTemperature"
+              ],
+              "type": "field"
+            },
+            {
+              "params": [],
+              "type": "mean"
+            }
+          ]
+        ],
+        "tags": [
+          {
+            "key": "deviceNo::tag",
+            "operator": "=~",
+            "value": "/^$deviceNo$/"
+          }
+        ]
+      },
+      {
+        "alias": "Sensor $tag_deviceNo",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "s_qVQfZRk"
+        },
+        "dsType": "sensordatadb",
+        "groupBy": [
+          {
+            "params": [
+              "$__interval"
+            ],
+            "type": "time"
+          },
+          {
+            "params": [
+              "deviceNo"
+            ],
+            "type": "tag"
+          },
+          {
+            "params": [
+              "null"
+            ],
+            "type": "fill"
+          }
+        ],
+        "hide": true,
+        "measurement": "barometer",
+        "orderByTime": "ASC",
+        "policy": "default",
+        "refId": "B",
+        "resultFormat": "time_series",
+        "select": [
+          [
+            {
+              "params": [
+                "temperature"
+              ],
+              "type": "field"
+            },
+            {
+              "params": [],
+              "type": "mean"
+            }
+          ]
+        ],
+        "tags": [
+          {
+            "key": "deviceNo::tag",
+            "operator": "=~",
+            "value": "/^$deviceNo$/"
+          }
+        ]
+      },
+      {
+        "alias": "Sensor $tag_deviceNo",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "s_qVQfZRk"
+        },
+        "dsType": "sensordatadb",
+        "groupBy": [
+          {
+            "params": [
+              "$__interval"
+            ],
+            "type": "time"
+          },
+          {
+            "params": [
+              "deviceNo"
+            ],
+            "type": "tag"
+          },
+          {
+            "params": [
+              "null"
+            ],
+            "type": "fill"
+          }
+        ],
+        "hide": true,
+        "measurement": "hygrometer",
+        "orderByTime": "ASC",
+        "policy": "default",
+        "refId": "D",
+        "resultFormat": "time_series",
+        "select": [
+          [
+            {
+              "params": [
+                "temperature"
+              ],
+              "type": "field"
+            },
+            {
+              "params": [],
+              "type": "mean"
+            }
+          ]
+        ],
+        "tags": [
+          {
+            "key": "deviceNo::tag",
+            "operator": "=~",
+            "value": "/^$deviceNo$/"
+          }
+        ]
+      }
+    ],
+    "title": "Temperatur",
+    "transparent": true,
+    "type": "heatmap"
+  }
+
